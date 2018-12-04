@@ -8,6 +8,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'   //旧版本中，也许是theme-default，请自行检查填写
 import axios from 'axios'
 
+
 Vue.prototype.$ajax = axios
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts

@@ -1,80 +1,102 @@
 <template>
-	
-
-<div id="myChart" :style="{width: '300px', height: '300px'}"></div>
-
-
+  <div class="container">
+  	<el-select v-model="value" placeholder="请选择" @change="show">
+    <el-option
+      v-for="item in videoList"
+      :key="item.type"
+      :label="item.src"
+      :value="item.src">
+    </el-option>
+  </el-select>
+    <div class="player">
+    	
+      <video-player  class="video-player vjs-custom-skin"
+                     ref="videoPlayer"
+                     :playsinline="true"
+                     :options="playerOptions"
+                     @play="onPlayerPlay($event)"
+                     @pause="onPlayerPause($event)"
+      >
+      </video-player>
+    </div>
+  </div>
 </template>
-
+ 
 <script>
-	export default {
-
-  name: 'hello',
+import { videoPlayer } from 'vue-video-player';
+export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+    	value:'',
+    	videoList:[{
+          type: "video/mp4",
+          src: "../../static/test.mp4" //你的视频地址（必填）
+        },
+        {
+          type: "video/mp4",
+          src: "../../static/test2.mp4" //你的视频地址（必填）
+        }
+    	],
+      playerOptions: {
+        playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
+        autoplay: false, //如果true,浏览器准备好时开始回放。
+        muted: false, // 默认情况下将会消除任何音频。
+        loop: false, // 导致视频一结束就重新开始。
+        preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+        language: 'zh-CN',
+        aspectRatio: '4:3', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+        sources: [
+        {
+          type: "video/mp4",
+          src: "../../static/test.mp4" //你的视频地址（必填）
+        }
+        ],
+        poster: "poster.jpg", //你的封面地址
+        width: document.documentElement.clientWidth,
+        notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
+//        controlBar: {
+//          timeDivider: true,
+//          durationDisplay: true,
+//          remainingTimeDisplay: false,
+//          fullscreenToggle: true  //全屏按钮
+//        }
+      }
     }
   },
-  mounted(){
-    this.drawLine();
+  components: {
+    videoPlayer
   },
   methods: {
-    drawLine(){
-        // 基于准备好的dom，初始化echarts实例
-        let myChart = this.$echarts.init(document.getElementById('myChart'))
-        // 绘制图表
-        myChart.setOption({
-            title: { text: '在Vue中使用echarts' },
-            tooltip: {},
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-        });
+  	show(){
+  		console.log(this.value+"--"+this.playerOptions.sources[0].src)
+  
+  		this.playerOptions.sources[0].src=this.value
+  		},
+    onPlayerPlay(player) {
+     // alert("play");
+    },
+    onPlayerPause(player){
+      //alert("pause");
+    },
+  },
+  computed: {
+    player() {
+      return this.$refs.videoPlayer.player
     }
   }
 }
 </script>
-
+ 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-	.el-header,
-	.el-footer {
-		background-color: #B3C0D1;
-		color: #333;
-		text-align: center;
-		line-height: 60px;
-	}
-	
-	.el-aside {
-		background-color: #D3DCE6;
-		color: #333;
-		text-align: center;
-		line-height: 200px;
-	}
-	
-	.el-main {
-		background-color: #E9EEF3;
-		color: #333;
-		text-align: center;
-		line-height: 160px;
-	}
-	
-	body>.el-container {
-		margin-bottom: 40px;
-	}
-	
-	.el-container:nth-child(5) .el-aside,
-	.el-container:nth-child(6) .el-aside {
-		line-height: 260px;
-	}
-	
-	.el-container:nth-child(7) .el-aside {
-		line-height: 320px;
-	}
+<style type="text/css" scoped>
+  .container {
+  	min-height: 50%;
+  }
+  .player{
+  	margin-top:2%;
+  	margin-left:25%;
+  	height: 50%;
+  	width: 50%;
+  }
 </style>

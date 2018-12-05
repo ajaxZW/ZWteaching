@@ -7,6 +7,9 @@ import echarts from 'echarts'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'   //旧版本中，也许是theme-default，请自行检查填写
 import axios from 'axios'
+import VideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+import 'vue-video-player/src/custom-theme.css'
 
 
 Vue.prototype.$ajax = axios
@@ -14,7 +17,7 @@ Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 /* eslint-disable no-new */
 Vue.use(ElementUI)
-
+Vue.use(VideoPlayer)
 new Vue({
   el: '#app',
   router,
